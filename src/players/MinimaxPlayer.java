@@ -5,60 +5,39 @@ import game.Board;
 
 import java.util.List;
 
-public class MinimaxPlayer extends Player {
-    private final Evaluator evaluator;
-    private final int MAX_DEPTH;
-    private final int opponent;
+public class MinimaxPlayer extends MinimaxPlayerBase {
 
-    public MinimaxPlayer(int player, Evaluator evaluator, int MAX_DEPTH) {
-        super(player);
-        this.evaluator = evaluator;
-        this.MAX_DEPTH = MAX_DEPTH;
-        this.opponent = player == 1 ? 2 : 1;
+    public MinimaxPlayer(int player, Evaluator evaluator, int maxDepth) {
+        super(player, evaluator, maxDepth);
     }
 
     @Override
-    public int getMove(Board board) {
-        List<Integer> validMoves = board.get_valid_moves();
-        int bestMove = 0;
-        int bestScore = Integer.MIN_VALUE;
-
-        for (int move : validMoves) {
-            Board successor = new Board(board);
-            successor.make_move(player, move);
-            int score = id_minimax(successor, opponent, 1, MAX_DEPTH);
-            if (score > bestScore) {
-                bestScore = score;
-                bestMove = move;
-            }
+    protected int searchNode(Board board, int currentPlayer, int depth, int alpha, int beta) {
+        if (isTerminal(board)) {
+            return terminalScore(board, depth);
         }
-        return bestMove;
-
-    }
-
-    private int id_minimax(Board board, int player, int depth, int MAX_DEPTH) {
-        int score;
-        if (depth == MAX_DEPTH || is_terminal(board)) {
+        if (depth == maxDepth) {
             return evaluator.evaluate(board);
         }
-        if (player == this.player) {
-            score = Integer.MIN_VALUE;
-            List<Board> successors = board.get_successors(player);
-            for (Board succ : successors) {
-                score = Math.max(score, id_minimax(succ, opponent, depth + 1, this.MAX_DEPTH));
+
+        List<Integer> validMoves = orderedMoves(board);
+
+        int best;
+        if (currentPlayer == player) {
+            best = Integer.MIN_VALUE;
+            for (int move : validMoves) {
+                Board successor = new Board(board);
+                successor.make_move(currentPlayer, move);
+                best = Math.max(best, search(successor, opponent, depth + 1, alpha, beta));
             }
         } else {
-            score = Integer.MAX_VALUE;
-            List<Board> successors = board.get_successors(opponent);
-            for (Board succ : successors) {
-                score = Math.min(score, id_minimax(succ, this.player, depth + 1, this.MAX_DEPTH));
+            best = Integer.MAX_VALUE;
+            for (int move : validMoves) {
+                Board successor = new Board(board);
+                successor.make_move(currentPlayer, move);
+                best = Math.min(best, search(successor, player, depth + 1, alpha, beta));
             }
         }
-        return score;
+        return best;
     }
-
-    private boolean is_terminal(Board board) {
-        return board.is_full() || board.is_winner(player) || board.is_winner(opponent);
-    }
-
 }

@@ -16,7 +16,7 @@ public class Board {
     public int getCols() {
         return cols;
     }
-    
+
     public int getCell(int row, int col){
         return grid[row][col];
     }
@@ -81,38 +81,26 @@ public class Board {
     }
 
     public boolean is_winner(int player) {
-        // TODO ubrazanje proveriti samo oko poteza koji se odigrao
-        // horizontal
-        for (int i = 0; i < this.rows; i++) {
-            for (int j = 0; j < this.cols - 3; j++) {
-                if (grid[i][j] == player && grid[i][j + 1] == player && grid[i][j + 2] == player && grid[i][j + 3] == player)
-                    return true;
-            }
-        }
-        // vertical
-        for (int i = 0; i < this.rows - 3; i++) {
-            for (int j = 0; j < this.cols; j++) {
-                if (grid[i][j] == player && grid[i + 1][j] == player && grid[i + 2][j] == player && grid[i + 3][j] == player)
-                    return true;
-            }
-        }
-        // diag \
-        for (int i = 0; i < this.rows - 3; i++) {
-            for (int j = 0; j < this.cols - 3; j++) {
-                if (grid[i][j] == player && grid[i + 1][j + 1] == player && grid[i + 2][j + 2] == player && grid[i + 3][j + 3] == player)
-                    return true;
-            }
-        }
-        // diag /
-        for (int i = 3; i < this.rows; i++) {
-            for (int j = 0; j < this.cols - 3; j++) {
-                if (grid[i][j] == player && grid[i - 1][j + 1] == player && grid[i - 2][j + 2] == player && grid[i - 3][j + 3] == player)
-                    return true;
+        for (int row = 0; row < this.rows; row++) {
+            for (int col = 0; col < this.cols; col++) {
+                for (Direction dir : Direction.values()) {
+                    if (hasFourInARow(player, row, col, dir)) return true;
+                }
             }
         }
         return false;
     }
-    
+
+    private boolean hasFourInARow(int player, int row, int col, Direction dir) {
+        int endRow = row + 3 * dir.dr;
+        int endCol = col + 3 * dir.dc;
+        if (endRow < 0 || endRow >= rows || endCol < 0 || endCol >= cols) return false;
+        for (int i = 0; i < 4; i++) {
+            if (grid[row + i * dir.dr][col + i * dir.dc] != player) return false;
+        }
+        return true;
+    }
+
     public boolean is_full(){
         for (int j = 0; j < this.cols; j++) {
             if (grid[0][j] == 0)
