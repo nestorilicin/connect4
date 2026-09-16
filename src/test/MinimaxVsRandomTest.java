@@ -29,7 +29,7 @@ public class MinimaxVsRandomTest extends BenchmarkTest<RandomMatchResult> {
         super("minimax_vs_random_results.csv");
     }
 
-    public static void main(String[] args) throws Exception {
+    static void main() throws Exception {
         new MinimaxVsRandomTest().run();
     }
 

@@ -3,8 +3,6 @@ package players;
 import evaluation.Evaluator;
 import game.Board;
 
-import java.util.List;
-
 public class MinimaxPlayer extends MinimaxPlayerBase {
 
     public MinimaxPlayer(int player, Evaluator evaluator, int maxDepth) {
@@ -20,7 +18,7 @@ public class MinimaxPlayer extends MinimaxPlayerBase {
             return evaluator.evaluate(board);
         }
 
-        List<Integer> validMoves = orderedMoves(board);
+        int[] validMoves = orderedMoves(board);
 
         int best;
         if (currentPlayer == player) {

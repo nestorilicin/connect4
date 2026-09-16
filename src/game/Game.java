@@ -13,27 +13,27 @@ public class Game {
         board = new Board();
     }
 
-    public int simulate() {
-        return simulate(true);
+    public void simulate() {
+        simulate(true);
     }
 
-    // Vraca 1 ili 2 za pobednika, 0 za nereseno; verbose ispisuje tablu
-    public int simulate(boolean verbose) {
+    // Vraca 1 ili 2 za pobednika, 0 za nereseno; withPrint ispisuje tablu
+    public int simulate(boolean withPrint) {
         while (true) {
             board.make_move(player1.getPlayer(), player1.getMove(board));
-            if (verbose) board.print();
+            if (withPrint) board.print();
             if (board.is_winner(player1.getPlayer())) {
-                if (verbose) System.out.println("Player 1 pobedio");
+                if (withPrint) System.out.println("Player 1 pobedio");
                 return player1.getPlayer();
             }
             board.make_move(player2.getPlayer(), player2.getMove(board));
-            if (verbose) board.print();
+            if (withPrint) board.print();
             if (board.is_winner(player2.getPlayer())) {
-                if (verbose) System.out.println("Player 2 pobedio");
+                if (withPrint) System.out.println("Player 2 pobedio");
                 return player2.getPlayer();
             }
             if (board.is_full()) {
-                if (verbose) System.out.println("Nereseno");
+                if (withPrint) System.out.println("Nereseno");
                 return 0;
             }
         }

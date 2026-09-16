@@ -3,8 +3,6 @@ package players;
 import evaluation.Evaluator;
 import game.Board;
 
-import java.util.List;
-
 public class MinimaxABPlayer extends MinimaxPlayerBase {
 
     public MinimaxABPlayer(int player, Evaluator evaluator, int maxDepth) {
@@ -20,7 +18,7 @@ public class MinimaxABPlayer extends MinimaxPlayerBase {
             return evaluator.evaluate(board);
         }
 
-        List<Integer> validMoves = orderedMoves(board);
+        int[] validMoves = orderedMoves(board);
         int score;
         if (currentPlayer == player) {
             score = Integer.MIN_VALUE;

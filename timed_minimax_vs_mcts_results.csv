@@ -1,0 +1,5 @@
+Player1,Player2,TimeLimitMs,Games,MinimaxABWins,MCTSWins,Draws,AvgTimeElapsed
+MCTS,TimedMinimaxAB,100,50,34,14,2,3.032
+TimedMinimaxAB,MCTS,100,50,19,31,0,3.114
+MCTS,TimedMinimaxAB,500,50,15,34,1,15.927
+TimedMinimaxAB,MCTS,500,50,13,37,0,14.672

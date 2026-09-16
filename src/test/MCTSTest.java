@@ -9,15 +9,17 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-// MCTS protiv MCTS (isti broj iteracija), analogno MinimaxTest-u
+// MCTS protiv MCTS (isti broj iteracija), po GAMES_PER_CONFIG partija jer je MCTS nedeterministicki
 public class MCTSTest extends BenchmarkTest<MCTSTestResult> {
-    private static final List<Integer> ITERATION_COUNTS = List.of(100, 200, 500, 1000, 2000, 5000, 10000);
+    private static final List<Integer> ITERATION_COUNTS =
+            List.of(10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100_000);
+    private static final int GAMES_PER_CONFIG = 100;
 
     public MCTSTest() {
         super("mcts_results.csv");
     }
 
-    public static void main(String[] args) throws Exception {
+    static void main() throws Exception {
         new MCTSTest().run();
     }
 
@@ -25,8 +27,7 @@ public class MCTSTest extends BenchmarkTest<MCTSTestResult> {
     protected List<Future<?>> submitTasks(ExecutorService executor) {
         List<Future<?>> tasks = new ArrayList<>();
         for (int iterations : ITERATION_COUNTS) {
-            int finalIterations = iterations;
-            tasks.add(executor.submit(() -> runMatch(finalIterations)));
+            tasks.add(executor.submit(() -> playBatch(iterations)));
         }
         return tasks;
     }
@@ -41,16 +42,36 @@ public class MCTSTest extends BenchmarkTest<MCTSTestResult> {
         return MCTSTestResult.csvHeader();
     }
 
-    private void runMatch(int iterations) {
-        MCTSPlayer player1 = new MCTSPlayer(1, iterations);
-        MCTSPlayer player2 = new MCTSPlayer(2, iterations);
-        Game game = new Game(player1, player2);
+    @Override
+    protected String resultNoun() {
+        return "serija";
+    }
 
-        long start = System.nanoTime();
-        int winner = game.simulate(false);
-        double elapsedSeconds = (System.nanoTime() - start) / 1_000_000_000.0;
-        long nodesCreated = player1.getNodesCreated() + player2.getNodesCreated();
+    private void playBatch(int iterations) {
+        int player1Wins = 0;
+        int player2Wins = 0;
+        int draws = 0;
+        long totalNanos = 0;
 
-        addResult(new MCTSTestResult("MCTS", "MCTS", iterations, winner, nodesCreated, elapsedSeconds));
+        for (int i = 0; i < GAMES_PER_CONFIG; i++) {
+            MCTSPlayer player1 = new MCTSPlayer(1, iterations);
+            MCTSPlayer player2 = new MCTSPlayer(2, iterations);
+
+            long start = System.nanoTime();
+            int winner = new Game(player1, player2).simulate(false);
+            totalNanos += System.nanoTime() - start;
+
+            if (winner == 0) {
+                draws++;
+            } else if (winner == 1) {
+                player1Wins++;
+            } else {
+                player2Wins++;
+            }
+        }
+
+        double avgTimeSeconds = (totalNanos / (double) GAMES_PER_CONFIG) / 1_000_000_000.0;
+        addResult(new MCTSTestResult("MCTS", "MCTS", iterations,
+                GAMES_PER_CONFIG, player1Wins, player2Wins, draws, avgTimeSeconds));
     }
 }

@@ -1,6 +1,6 @@
 package game;
 
-// Deli se izmedju Board (provera pobede) i evaluatora (skeniranje prozora)
+// za proveru pobede i skeniranje prozora
 public enum Direction {
     HORIZONTAL(0, 1),
     VERTICAL(1, 0),

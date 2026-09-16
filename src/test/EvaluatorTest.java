@@ -17,7 +17,7 @@ import java.util.function.IntFunction;
 // MinimaxAB, svaki evaluator protiv svakog drugog (deterministicki, bez ponavljanja partija)
 public class EvaluatorTest extends BenchmarkTest<EvaluatorMatchResult> {
     private static final int MIN_DEPTH = 1;
-    private static final int MAX_DEPTH = 8;
+    private static final int MAX_DEPTH = 9;
 
     private record EvaluatorSpec(String name, IntFunction<Evaluator> factory) {
     }
@@ -26,7 +26,7 @@ public class EvaluatorTest extends BenchmarkTest<EvaluatorMatchResult> {
         super("evaluator_results.csv");
     }
 
-    public static void main(String[] args) throws Exception {
+    static void main() throws Exception {
         new EvaluatorTest().run();
     }
 

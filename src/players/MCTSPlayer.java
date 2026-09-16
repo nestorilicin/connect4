@@ -2,7 +2,6 @@ package players;
 
 import game.Board;
 
-import java.util.List;
 import java.util.Random;
 
 // MCTS (UCT) prema: https://www.baeldung.com/java-monte-carlo-tree-search
@@ -12,6 +11,8 @@ public class MCTSPlayer extends Player {
     private static final int DEFAULT_ITERATIONS = 2000;
 
     private final int iterations;
+    private final long timeLimitMillis;
+    private final boolean timed;
     private final Random random = new Random();
     private long nodesCreated = 0;
 
@@ -19,23 +20,46 @@ public class MCTSPlayer extends Player {
         this(player, DEFAULT_ITERATIONS);
     }
 
+    // Netajmirano: fiksan broj iteracija
     public MCTSPlayer(int player, int iterations) {
         super(player);
         this.iterations = iterations;
+        this.timeLimitMillis = 0;
+        this.timed = false;
+    }
+
+    // Tajmirano: radi dok ne istekne vremenski limit, umesto fiksnog broja iteracija
+    public MCTSPlayer(int player, long timeLimitMillis) {
+        super(player);
+        this.iterations = 0;
+        this.timeLimitMillis = timeLimitMillis;
+        this.timed = true;
     }
 
     @Override
     public int getMove(Board board) {
         MCTSNode root = new MCTSNode(new Board(board), null, -1, 3 - player);
 
-        for (int i = 0; i < iterations; i++) {
-            MCTSNode node = select(root);
-            node = expand(node);
-            int winner = simulate(node);
-            backpropagate(node, winner);
+        if (timed) {
+            long deadline = System.currentTimeMillis() + timeLimitMillis;
+            while (System.currentTimeMillis() < deadline) {
+                runIteration(root);
+            }
+        } else {
+            for (int i = 0; i < iterations; i++) {
+                runIteration(root);
+            }
         }
 
         return root.mostVisitedChild().getMoveThatLedHere();
+    }
+
+    // Jedna MCTS iteracija kroz sve 4 faze
+    private void runIteration(MCTSNode root) {
+        MCTSNode node = select(root);
+        node = expand(node);
+        int winner = simulate(node);
+        backpropagate(node, winner);
     }
 
     // FAZA 1 - SELECTION: silazi kroz stablo dok je cvor potpuno razvijen
@@ -61,8 +85,8 @@ public class MCTSPlayer extends Player {
         int currentPlayer = 3 - node.getPlayerJustMoved();
 
         while (!rolloutBoard.is_full() && !rolloutBoard.is_winner(1) && !rolloutBoard.is_winner(2)) {
-            List<Integer> validMoves = rolloutBoard.get_valid_moves();
-            int move = validMoves.get(random.nextInt(validMoves.size()));
+            int[] validMoves = rolloutBoard.get_valid_moves();
+            int move = validMoves[random.nextInt(validMoves.length)];
             rolloutBoard.make_move(currentPlayer, move);
             currentPlayer = 3 - currentPlayer;
         }

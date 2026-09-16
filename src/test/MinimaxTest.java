@@ -16,12 +16,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.function.IntFunction;
 
-// Benchmarkira Minimax i MinimaxAB (svaki protiv sebe) na razlicitim dubinama
+// Minimax vs MinimaxAB na razlicitim dubinama
 public class MinimaxTest extends BenchmarkTest<TestResult> {
     private static final int MIN_DEPTH = 1;
     private static final int MAX_DEPTH = 7;
-
-    // Konstruise igraca za dati algoritam iz (player, evaluator, dubina)
+    
     private interface PlayerFactory {
         MinimaxPlayerBase create(int player, Evaluator evaluator, int maxDepth);
     }
@@ -36,7 +35,7 @@ public class MinimaxTest extends BenchmarkTest<TestResult> {
         super("minimax_results.csv");
     }
 
-    public static void main(String[] args) throws Exception {
+    static void main() throws Exception {
         new MinimaxTest().run();
     }
 

@@ -20,7 +20,7 @@ public class MCTSVsRandomTest extends BenchmarkTest<MCTSMatchResult> {
         super("mcts_vs_random_results.csv");
     }
 
-    public static void main(String[] args) throws Exception {
+    static void main() throws Exception {
         new MCTSVsRandomTest().run();
     }
 
@@ -28,9 +28,8 @@ public class MCTSVsRandomTest extends BenchmarkTest<MCTSMatchResult> {
     protected List<Future<?>> submitTasks(ExecutorService executor) {
         List<Future<?>> tasks = new ArrayList<>();
         for (int iterations : ITERATION_COUNTS) {
-            int finalIterations = iterations;
-            tasks.add(executor.submit(() -> playBatch(finalIterations, true)));
-            tasks.add(executor.submit(() -> playBatch(finalIterations, false)));
+            tasks.add(executor.submit(() -> playBatch(iterations, true)));
+            tasks.add(executor.submit(() -> playBatch(iterations, false)));
         }
         return tasks;
     }

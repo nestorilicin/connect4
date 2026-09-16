@@ -2,10 +2,6 @@ package players;
 
 import game.Board;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
 public abstract class Player {
     protected int player;
 
@@ -19,11 +15,20 @@ public abstract class Player {
 
     public abstract int getMove(Board board);
 
-    protected static List<Integer> centerFirst(Board board) {
-        List<Integer> valid = board.get_valid_moves();
+    // Insertion sort po rastojanju od centra, bez boksovanja
+    protected static int[] centerFirst(Board board) {
+        int[] moves = board.get_valid_moves();
         double center = (board.getCols() - 1) / 2.0;
-        List<Integer> ordered = new ArrayList<>(valid);
-        ordered.sort(Comparator.comparingDouble(a -> Math.abs(a - center)));
-        return ordered;
+        for (int i = 1; i < moves.length; i++) {
+            int move = moves[i];
+            double key = Math.abs(move - center);
+            int j = i - 1;
+            while (j >= 0 && Math.abs(moves[j] - center) > key) {
+                moves[j + 1] = moves[j];
+                j--;
+            }
+            moves[j + 1] = move;
+        }
+        return moves;
     }
 }

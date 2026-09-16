@@ -1,12 +1,12 @@
 package game;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Board {
-    private int rows;
-    private int cols;
-    private int[][] grid;
+    private final int rows;
+    private final int cols;
+    private final int[][] grid;
+    private int lastPlayer = 0;
+    private int lastRow = -1;
+    private int lastCol = -1;
 
 
     public int getRows() {
@@ -17,7 +17,7 @@ public class Board {
         return cols;
     }
 
-    public int getCell(int row, int col){
+    public int getCell(int row, int col) {
         return grid[row][col];
     }
 
@@ -38,6 +38,9 @@ public class Board {
         for (int i = 0; i < other.rows; i++) {
             System.arraycopy(other.grid[i], 0, this.grid[i], 0, other.cols);
         }
+        this.lastPlayer = other.lastPlayer;
+        this.lastRow = other.lastRow;
+        this.lastCol = other.lastCol;
     }
 
     public void print() {
@@ -57,54 +60,53 @@ public class Board {
         for (int i = this.rows - 1; i >= 0; i--) {
             if (this.grid[i][column] == 0) {
                 this.grid[i][column] = player;
+                lastPlayer = player;
+                lastRow = i;
+                lastCol = column;
                 return;
             }
         }
     }
 
-    public List<Integer> get_valid_moves() {
-        List<Integer> valid = new ArrayList<>();
+    public int[] get_valid_moves() {
+        int count = 0;
         for (int j = 0; j < this.cols; j++) {
-            if (this.grid[0][j] == 0) valid.add(j);
+            if (this.grid[0][j] == 0) count++;
+        }
+        int[] valid = new int[count];
+        int idx = 0;
+        for (int j = 0; j < this.cols; j++) {
+            if (this.grid[0][j] == 0) valid[idx++] = j;
         }
         return valid;
     }
 
-    public List<Board> get_successors(int player) {
-        List<Board> result = new ArrayList<>();
-        for (int j : this.get_valid_moves()) {
-            Board newBoard = new Board(this);
-            newBoard.make_move(player, j);
-            result.add(newBoard);
-        }
-        return result;
-    }
 
+    // optimizacija: samo oko poslednjeg cvora
     public boolean is_winner(int player) {
-        for (int row = 0; row < this.rows; row++) {
-            for (int col = 0; col < this.cols; col++) {
-                for (Direction dir : Direction.values()) {
-                    if (hasFourInARow(player, row, col, dir)) return true;
-                }
-            }
+        if (player != lastPlayer || lastRow < 0) return false;
+        for (Direction dir : Direction.values()) {
+            int count = 1 + countDirection(dir.dr, dir.dc) + countDirection(-dir.dr, -dir.dc);
+            if (count >= 4) return true;
         }
         return false;
     }
-
-    private boolean hasFourInARow(int player, int row, int col, Direction dir) {
-        int endRow = row + 3 * dir.dr;
-        int endCol = col + 3 * dir.dc;
-        if (endRow < 0 || endRow >= rows || endCol < 0 || endCol >= cols) return false;
-        for (int i = 0; i < 4; i++) {
-            if (grid[row + i * dir.dr][col + i * dir.dc] != player) return false;
+    
+    private int countDirection(int dr, int dc) {
+        int count = 0;
+        int r = lastRow + dr;
+        int c = lastCol + dc;
+        while (r >= 0 && r < rows && c >= 0 && c < cols && grid[r][c] == lastPlayer) {
+            count++;
+            r += dr;
+            c += dc;
         }
-        return true;
+        return count;
     }
 
-    public boolean is_full(){
+    public boolean is_full() {
         for (int j = 0; j < this.cols; j++) {
-            if (grid[0][j] == 0)
-                return false;
+            if (grid[0][j] == 0) return false;
         }
         return true;
     }

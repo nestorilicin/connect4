@@ -2,6 +2,7 @@ package evaluation;
 
 import game.Board;
 
+// jednostavna heuristika, window skor i bonus za centar
 public class SimpleEvaluator extends Evaluator {
     public SimpleEvaluator(int player) {
         super(player);

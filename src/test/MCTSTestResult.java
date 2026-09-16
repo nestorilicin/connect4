@@ -1,15 +1,16 @@
 package test;
 
-// Jedna partija MCTS protiv MCTS, toString() daje CSV liniju
+// Jedna serija partija (MCTS protiv MCTS, isti broj iteracija), toString() daje CSV liniju
 public record MCTSTestResult(String player1, String player2, int iterations,
-                              int winner, long nodesCreated, double timeElapsedSeconds) implements BenchmarkResult {
+                              int games, int player1Wins, int player2Wins, int draws,
+                              double avgTimeSeconds) implements BenchmarkResult {
 
     public static String csvHeader() {
-        return "Player1,Player2,Iterations,Winner,NodesCreated,TimeElapsed";
+        return "Player1,Player2,Iterations,Games,Player1Wins,Player2Wins,Draws,AvgTimeElapsed";
     }
 
     @Override
     public String toString() {
-        return Csv.row(player1, player2, iterations, winner, nodesCreated, timeElapsedSeconds);
+        return Csv.row(player1, player2, iterations, games, player1Wins, player2Wins, draws, avgTimeSeconds);
     }
 }

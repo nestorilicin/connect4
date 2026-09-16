@@ -3,8 +3,6 @@ package players;
 import evaluation.Evaluator;
 import game.Board;
 
-import java.util.List;
-
 // Template method: getMove() je fiksan, podklase daju search()
 public abstract class MinimaxPlayerBase extends Player {
     protected final Evaluator evaluator;
@@ -21,8 +19,8 @@ public abstract class MinimaxPlayerBase extends Player {
 
     @Override
     public final int getMove(Board board) {
-        List<Integer> validMoves = orderedMoves(board);
-        int bestMove = validMoves.getFirst();
+        int[] validMoves = orderedMoves(board);
+        int bestMove = validMoves[0];
         int bestScore = Integer.MIN_VALUE;
 
         for (int move : validMoves) {
@@ -38,7 +36,7 @@ public abstract class MinimaxPlayerBase extends Player {
     }
 
     // Isti redosled poteza za obe podklase, da izbori ostanu uporedivi
-    protected final List<Integer> orderedMoves(Board board) {
+    protected final int[] orderedMoves(Board board) {
         return Player.centerFirst(board);
     }
 

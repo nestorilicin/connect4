@@ -2,6 +2,7 @@ package evaluation;
 
 import game.Board;
 
+// window skor, bonus za centar i prepoznaje pretnje drugog igraca
 public class ThreatEvaluator extends Evaluator {
     private static final int OPEN_THREE = 60;
     private static final int CLOSED_THREE = 15;
@@ -55,7 +56,7 @@ public class ThreatEvaluator extends Evaluator {
         int sign = playerPieces > 0 ? 1 : (opponentPieces > 0 ? -1 : 0);
         if (sign == 0) return 0;
         boolean playableNow = emptyCount == 1 && isPlayable(board, emptyRow, emptyCol);
-        int value = switch (pieces){
+        int value = switch (pieces) {
             case 1 -> ONE;
             case 2 -> TWO;
             case 3 -> playableNow ? OPEN_THREE : CLOSED_THREE;

@@ -2,7 +2,7 @@ package evaluation;
 
 import game.Board;
 
-// Prozori kao kod ThreatEvaluator-a, plus bonus za duplu pretnju (vilicu)
+// window kao kod ThreatEvaluator plus bonus za fork
 public class AdvancedEvaluator extends Evaluator {
     private static final int OPEN_THREE = 60;
     private static final int CLOSED_THREE = 15;

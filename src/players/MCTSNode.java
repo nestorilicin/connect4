@@ -12,7 +12,8 @@ class MCTSNode {
     private final int moveThatLedHere;
     private final int playerJustMoved;
     private final List<MCTSNode> children = new ArrayList<>();
-    private final List<Integer> untriedMoves;
+    private final int[] untriedMoves;
+    private int untriedCount;
     private int visits = 0;
     private double wins = 0;
 
@@ -22,6 +23,7 @@ class MCTSNode {
         this.moveThatLedHere = moveThatLedHere;
         this.playerJustMoved = playerJustMoved;
         this.untriedMoves = board.get_valid_moves();
+        this.untriedCount = untriedMoves.length;
     }
 
     boolean isTerminal() {
@@ -29,7 +31,7 @@ class MCTSNode {
     }
 
     boolean isFullyExpanded() {
-        return untriedMoves.isEmpty();
+        return untriedCount == 0;
     }
 
     // UCT: bira dete sa najvecom vrednoscu, balansira iskoriscenje i istrazivanje
@@ -49,7 +51,7 @@ class MCTSNode {
 
     // Dodaje jedno novo dete za poslednji neisprobani potez
     MCTSNode expand() {
-        int move = untriedMoves.removeLast();
+        int move = untriedMoves[--untriedCount];
         Board childBoard = new Board(board);
         int mover = 3 - playerJustMoved;
         childBoard.make_move(mover, move);

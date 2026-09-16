@@ -3,13 +3,13 @@ package evaluation;
 import game.Board;
 import game.Direction;
 
-// Template method: evaluate() je fiksan skelet, podklase daju skorovanje
+// Template method
 public abstract class Evaluator {
     protected final int player;
     protected final int opponent;
     public static final int WIN_SCORE = 1_000_000;
 
-    protected Evaluator(int player){
+    protected Evaluator(int player) {
         this.player = player;
         this.opponent = 3 - player;
     }
@@ -24,8 +24,7 @@ public abstract class Evaluator {
     protected abstract int centerScore(Board board);
 
     protected abstract int evaluateWindow(Board board, int row, int col, int rowDirection, int colDirection);
-
-    // Opciona dodatna evaluacija (npr. dupla pretnja); podrazumevano bez efekta
+    
     protected int extraScore(Board board) {
         return 0;
     }
