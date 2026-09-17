@@ -14,8 +14,7 @@ public abstract class Player {
     }
 
     public abstract int getMove(Board board);
-
-    // Insertion sort po rastojanju od centra, bez boksovanja
+    
     protected static int[] centerFirst(Board board) {
         int[] moves = board.get_valid_moves();
         double center = (board.getCols() - 1) / 2.0;

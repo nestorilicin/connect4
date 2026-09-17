@@ -17,7 +17,7 @@ public class Game {
         simulate(true);
     }
 
-    // Vraca 1 ili 2 za pobednika, 0 za nereseno; withPrint ispisuje tablu
+    
     public int simulate(boolean withPrint) {
         while (true) {
             board.make_move(player1.getPlayer(), player1.getMove(board));

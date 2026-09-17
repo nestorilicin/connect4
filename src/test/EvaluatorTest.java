@@ -14,7 +14,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.function.IntFunction;
 
-// MinimaxAB, svaki evaluator protiv svakog drugog (deterministicki, bez ponavljanja partija)
+// tri evaluatora svaki protiv svakog
 public class EvaluatorTest extends BenchmarkTest<EvaluatorMatchResult> {
     private static final int MIN_DEPTH = 1;
     private static final int MAX_DEPTH = 9;

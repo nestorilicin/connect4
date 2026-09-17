@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-// MCTS protiv MCTS (isti broj iteracija), po GAMES_PER_CONFIG partija jer je MCTS nedeterministicki
+// MCTS vs MCTS, vise simulacija jer je nedeterministicko
 public class MCTSTest extends BenchmarkTest<MCTSTestResult> {
     private static final List<Integer> ITERATION_COUNTS =
             List.of(10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100_000);

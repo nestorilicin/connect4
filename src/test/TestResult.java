@@ -1,6 +1,5 @@
 package test;
 
-// Jedan red benchmark rezultata (Minimax/MinimaxAB self-play), toString() daje CSV liniju
 public record TestResult(String player1, String player2, int depth, String evaluator,
                           int winner, long nodesVisited, double timeElapsedSeconds) implements BenchmarkResult {
 

@@ -35,12 +35,11 @@ public abstract class MinimaxPlayerBase extends Player {
         return bestMove;
     }
 
-    // Isti redosled poteza za obe podklase, da izbori ostanu uporedivi
+    
     protected final int[] orderedMoves(Board board) {
         return Player.centerFirst(board);
     }
-
-    // Broji svaki posecen cvor, pa delegira stvarnu pretragu podklasi
+    
     protected final int search(Board board, int currentPlayer, int depth, int alpha, int beta) {
         nodesVisited++;
         return searchNode(board, currentPlayer, depth, alpha, beta);
@@ -51,8 +50,7 @@ public abstract class MinimaxPlayerBase extends Player {
     protected boolean isTerminal(Board board) {
         return board.is_full() || board.is_winner(player) || board.is_winner(opponent);
     }
-
-    // Ista formula terminalnog skora za obe podklase; blaga prednost brzoj pobedi
+    
     protected final int terminalScore(Board board, int depth) {
         if (board.is_winner(player)) return Evaluator.WIN_SCORE - depth;
         if (board.is_winner(opponent)) return -Evaluator.WIN_SCORE + depth;

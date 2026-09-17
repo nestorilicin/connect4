@@ -1,6 +1,5 @@
 package test;
 
-// Jedna serija partija (MCTS protiv Random), toString() daje CSV liniju
 public record MCTSMatchResult(String player1, String player2, int iterations,
                                int games, int mctsWins, int randomWins, int draws,
                                double avgTimeSeconds) implements BenchmarkResult {

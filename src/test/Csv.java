@@ -2,7 +2,7 @@ package test;
 
 import java.util.Locale;
 
-// Zajednicko formatiranje CSV reda: spaja polja zapetama, duple na 3 decimale
+
 public final class Csv {
     private Csv() {
     }

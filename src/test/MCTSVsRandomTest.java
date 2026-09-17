@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-// MCTS protiv RandomPlayer-a, po GAMES_PER_CONFIG partija za oba redosleda poteza
+// MCTS vs random, vise partija
 public class MCTSVsRandomTest extends BenchmarkTest<MCTSMatchResult> {
     private static final List<Integer> ITERATION_COUNTS = List.of(10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000);
     private static final int GAMES_PER_CONFIG = 100;

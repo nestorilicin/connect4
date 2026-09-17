@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-// Template method: run() je fiksan, podklase daju zadatke, poredak i CSV zaglavlje
+// Template method
 public abstract class BenchmarkTest<R extends BenchmarkResult> {
     private final String csvPath;
     private final List<R> results = Collections.synchronizedList(new ArrayList<>());
@@ -36,19 +36,16 @@ public abstract class BenchmarkTest<R extends BenchmarkResult> {
         System.out.println("Gotovo, " + sorted.size() + " " + resultNoun() + " upisano u " + csvPath);
     }
 
-    // Podklasa gradi ugnjezdene petlje konfiguracija i submituje zadatke
     protected abstract List<Future<?>> submitTasks(ExecutorService executor);
 
     protected abstract Comparator<R> sortComparator();
 
     protected abstract String csvHeader();
 
-    // "partija" ili "serija", samo za poruku po zavrsetku
     protected String resultNoun() {
         return "partija";
     }
 
-    // Dodaje rezultat i odmah ga ispisuje; results je vec thread-safe lista
     protected final void addResult(R result) {
         results.add(result);
         logProgress(result);

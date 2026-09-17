@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-// MinimaxAB (AdvancedEvaluator) protiv MCTS, po GAMES_PER_ORDER partija za oba redosleda poteza
+// MinimaxAB (ThreatEvaluator jer je najbolji) protiv MCTS, vise partija
 public class MinimaxVsMctsTest extends BenchmarkTest<MinimaxMctsMatchResult> {
     private static final List<Integer> DEPTHS = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
     private static final List<Integer> ITERATION_COUNTS = List.of(100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100_000);

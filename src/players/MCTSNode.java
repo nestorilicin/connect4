@@ -5,7 +5,7 @@ import game.Board;
 import java.util.ArrayList;
 import java.util.List;
 
-// Cvor MCTS stabla: stanje table, roditelj, deca i statistika poseta/pobeda
+
 class MCTSNode {
     private final Board board;
     private final MCTSNode parent;
@@ -33,8 +33,7 @@ class MCTSNode {
     boolean isFullyExpanded() {
         return untriedCount == 0;
     }
-
-    // UCT: bira dete sa najvecom vrednoscu, balansira iskoriscenje i istrazivanje
+    
     MCTSNode selectChild(double explorationConstant) {
         MCTSNode best = null;
         double bestValue = Double.NEGATIVE_INFINITY;
@@ -48,8 +47,7 @@ class MCTSNode {
         }
         return best;
     }
-
-    // Dodaje jedno novo dete za poslednji neisprobani potez
+    
     MCTSNode expand() {
         int move = untriedMoves[--untriedCount];
         Board childBoard = new Board(board);
@@ -59,8 +57,7 @@ class MCTSNode {
         children.add(child);
         return child;
     }
-
-    // Azurira posete/pobede ovog cvora i penje se do korena
+    
     void backpropagate(int winner) {
         visits++;
         if (winner == 0) {
@@ -72,8 +69,7 @@ class MCTSNode {
             parent.backpropagate(winner);
         }
     }
-
-    // Najposecenije dete je konacan izbor poteza, otpornije na sum od win-rate-a
+    
     MCTSNode mostVisitedChild() {
         MCTSNode best = null;
         int bestVisits = -1;

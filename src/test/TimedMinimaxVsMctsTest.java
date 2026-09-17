@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-// Tajmirani MinimaxAB (AdvancedEvaluator) protiv tajmiranog MCTS-a, isti limit po potezu
+// minimaxAB protiv MCTS sa vremenskim ogranicenjem
 public class TimedMinimaxVsMctsTest extends BenchmarkTest<TimedMatchResult> {
     private static final List<Long> TIME_LIMITS_MS = List.of(200L, 300L, 400L,600L,700L,800L,900L, 1000L);
     private static final int GAMES_PER_ORDER = 50;

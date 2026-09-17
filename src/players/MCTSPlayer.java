@@ -19,16 +19,14 @@ public class MCTSPlayer extends Player {
     public MCTSPlayer(int player) {
         this(player, DEFAULT_ITERATIONS);
     }
-
-    // Netajmirano: fiksan broj iteracija
+    
     public MCTSPlayer(int player, int iterations) {
         super(player);
         this.iterations = iterations;
         this.timeLimitMillis = 0;
         this.timed = false;
     }
-
-    // Tajmirano: radi dok ne istekne vremenski limit, umesto fiksnog broja iteracija
+    
     public MCTSPlayer(int player, long timeLimitMillis) {
         super(player);
         this.iterations = 0;
@@ -53,8 +51,7 @@ public class MCTSPlayer extends Player {
 
         return root.mostVisitedChild().getMoveThatLedHere();
     }
-
-    // Jedna MCTS iteracija kroz sve 4 faze
+    
     private void runIteration(MCTSNode root) {
         MCTSNode node = select(root);
         node = expand(node);
@@ -62,7 +59,7 @@ public class MCTSPlayer extends Player {
         backpropagate(node, winner);
     }
 
-    // FAZA 1 - SELECTION: silazi kroz stablo dok je cvor potpuno razvijen
+    // silazi kroz stablo dok je cvor potpuno razvijen
     private MCTSNode select(MCTSNode node) {
         while (!node.isTerminal() && node.isFullyExpanded()) {
             node = node.selectChild(EXPLORATION_CONSTANT);
@@ -70,7 +67,7 @@ public class MCTSPlayer extends Player {
         return node;
     }
 
-    // FAZA 2 - EXPANSION: dodaje jedno novo dete za neisprobani potez
+    // dodaje jedno novo dete za neisprobani potez
     private MCTSNode expand(MCTSNode node) {
         if (node.isTerminal()) {
             return node;
@@ -79,7 +76,7 @@ public class MCTSPlayer extends Player {
         return node.expand();
     }
 
-    // FAZA 3 - SIMULATION: nasumicna partija do kraja, vraca pobednika
+    // nasumicna partija do kraja, vraca pobednika
     private int simulate(MCTSNode node) {
         Board rolloutBoard = new Board(node.getBoard());
         int currentPlayer = 3 - node.getPlayerJustMoved();
@@ -96,7 +93,7 @@ public class MCTSPlayer extends Player {
         return 0;
     }
 
-    // FAZA 4 - BACKPROPAGATION: rezultat se penje do korena
+    // rezultat se penje do korena
     private void backpropagate(MCTSNode node, int winner) {
         node.backpropagate(winner);
     }

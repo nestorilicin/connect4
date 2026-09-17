@@ -3,15 +3,14 @@ package players;
 import evaluation.Evaluator;
 import game.Board;
 
-// MinimaxAB sa iterative deepening: produbljuje dok ne istekne vremenski limit
+// iterative deepening dok ne istekne timelimit
 public class TimedMinimaxABPlayer extends Player {
     private final Evaluator evaluator;
     private final int opponent;
     private final long timeLimitMillis;
     private long nodesVisited = 0;
     private long deadline;
-
-    // Prekida pretragu na pola kad vreme istekne
+    
     private static class TimeUpException extends RuntimeException {
     }
 
@@ -87,8 +86,7 @@ public class TimedMinimaxABPlayer extends Player {
     private boolean isTerminal(Board board) {
         return board.is_full() || board.is_winner(player) || board.is_winner(opponent);
     }
-
-    // Ista formula terminalnog skora kao MinimaxPlayerBase
+    
     private int terminalScore(Board board, int depth) {
         if (board.is_winner(player)) return Evaluator.WIN_SCORE - depth;
         if (board.is_winner(opponent)) return -Evaluator.WIN_SCORE + depth;

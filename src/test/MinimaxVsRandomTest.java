@@ -16,7 +16,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.function.IntFunction;
 
-// MinimaxAB protiv RandomPlayer-a, po GAMES_PER_CONFIG partija za oba redosleda poteza
+// minimaxAB protiv randomca, vise partija
 public class MinimaxVsRandomTest extends BenchmarkTest<RandomMatchResult> {
     private static final int MIN_DEPTH = 1;
     private static final int MAX_DEPTH = 6;
